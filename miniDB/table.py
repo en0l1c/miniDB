@@ -208,6 +208,8 @@ class Table:
 
 
     def _select_where(self, return_columns, condition=None, distinct=False, order_by=None, desc=True, limit=None):
+        print(f"\nCondition: {condition}\n")
+        print(f"\nSplit condition: {split_condition(condition)}\n")
         '''
         Select and return a table containing specified columns and rows where condition is met.
 

@@ -77,7 +77,7 @@ def create_query_plan(query, keywords, action):
 
     if action=='select':
         dic = evaluate_from_clause(dic)
-
+        print(dic)
         if dic['distinct'] is not None:
             dic['select'] = dic['distinct']
             dic['distinct'] = True
@@ -92,7 +92,7 @@ def create_query_plan(query, keywords, action):
             
         else:
             dic['desc'] = None
-
+        
     if action=='create table':
         args = dic['create table'][dic['create table'].index('('):dic['create table'].index(')')+1]
         dic['create table'] = dic['create table'].removesuffix(args).strip()
@@ -170,7 +170,7 @@ def interpret(query):
                      'import': ['import', 'from'],
                      'export': ['export', 'to'],
                      'insert into': ['insert into', 'values'],
-                     'select': ['select', 'from', 'where', 'distinct', 'order by', 'limit'],
+                     'select': ['select', 'from', 'where', 'not', 'ƒdistinct', 'order by', 'limit'],
                      'lock table': ['lock table', 'mode'],
                      'unlock table': ['unlock table', 'force'],
                      'delete from': ['delete from', 'where'],
