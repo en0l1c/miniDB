@@ -77,7 +77,16 @@ def create_query_plan(query, keywords, action):
 
     if action=='select':
         dic = evaluate_from_clause(dic)
-        print(dic)
+        print(f"{dic} from line 80 mdb.py\n")
+
+        # if dic['where'] is not None:
+        #     dic['select'] = dic['where']
+        #     dic['where'] = True
+
+        if dic['not'] is not None:
+            dic['select'] = dic['not']
+            dic['not'] = True
+
         if dic['distinct'] is not None:
             dic['select'] = dic['distinct']
             dic['distinct'] = True
@@ -120,6 +129,7 @@ def create_query_plan(query, keywords, action):
             dic['force'] = True
         else:
             dic['force'] = False
+    print(f"kw_positions: {kw_positions} \n kw_in_query: {kw_in_query}\n from line 128 mdb.py")
 
     return dic
 
@@ -170,7 +180,7 @@ def interpret(query):
                      'import': ['import', 'from'],
                      'export': ['export', 'to'],
                      'insert into': ['insert into', 'values'],
-                     'select': ['select', 'from', 'where', 'not', 'ƒdistinct', 'order by', 'limit'],
+                     'select': ['select', 'from', 'where', 'not', 'distinct', 'order by', 'limit'],
                      'lock table': ['lock table', 'mode'],
                      'unlock table': ['unlock table', 'force'],
                      'delete from': ['delete from', 'where'],
@@ -184,6 +194,26 @@ def interpret(query):
         query+=';'
     
     query = query.replace("(", " ( ").replace(")", " ) ").replace(";", " ;").strip()
+
+    ####################
+    #####################
+    full_query = query.split()
+    print(f"Full Query:\n{full_query} from line 197 mdb.py\n")
+
+    for command in full_query:
+        if command == "not":
+            print("\n'not' keyword found in da query! - from line 198 mdb.py\n")
+        elif "between" in full_query:
+            if "and" in full_query:
+                print("\n'between' keyword found in da query! - from line 198 mdb.py\n")
+                break
+        elif command == "and" and command != "between":
+            print("\n'and' keyword found in da query! - from line 198 mdb.py\n")
+        elif command == "or":
+            print("\n'or' keyword found in da query! - from line 198 mdb.py\n")
+
+    ###################
+    ###################
 
     for kw in kw_per_action.keys():
         if query.startswith(kw):

@@ -208,8 +208,7 @@ class Table:
 
 
     def _select_where(self, return_columns, condition=None, distinct=False, order_by=None, desc=True, limit=None):
-        print(f"\nCondition: {condition}\n")
-        print(f"\nSplit condition: {split_condition(condition)}\n")
+
         '''
         Select and return a table containing specified columns and rows where condition is met.
 
@@ -225,6 +224,21 @@ class Table:
             desc: boolean. If True, order_by will return results in descending order (False by default).
             limit: int. An integer that defines the number of rows that will be returned (all rows if None).
         '''
+        print(f"\nCondition: {condition} (from line 227 table.py)\n")
+        #print(f"\nSplit condition: {split_condition(condition)}\n")
+
+
+        ##############
+        ################
+        # check_not_op = False
+        # if "not" in return_columns:
+        #     check_not_op = True
+        #     print(f"\n{check_not_op}\n from line 236 table.py")
+        #     return_columns.split(' ')[1]
+        #     print(return_columns)
+        ###############
+        ###############
+
 
         # if * return all columns, else find the column indexes for the columns specified
         if return_columns == '*':
@@ -554,15 +568,24 @@ class Table:
                 Operatores supported: (<,<=,==,>=,>)
             join: boolean. Whether to join or not (False by default).
         '''
-        # if both_columns (used by the join function) return the names of the names of the columns (left first)
+
+
+
+        # if both_columns (used by the join function) return the names of the columns (left first)
         if join:
             return split_condition(condition)
+
 
         # cast the value with the specified column's type and return the column name, the operator and the casted value
         left, op, right = split_condition(condition)
         if left not in self.column_names:
             raise ValueError(f'Condition is not valid (cant find column name)')
         coltype = self.column_types[self.column_names.index(left)]
+
+        # if not_op:
+        #     return
+        print(f"left: {left}, op: {op}, right: {right}")
+
 
         return left, op, coltype(right)
 
